@@ -1,30 +1,58 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:code_aware/view/screens/auth_screens/login.dart';
+import 'package:code_aware/view/screens/auth_screens/welcome.dart';
+import 'package:code_aware/view/screens/auth_screens/signup.dart';
+import 'package:code_aware/view/screens/in_app_screens/home.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyCodeAware());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyCodeAware extends StatefulWidget{
+  const MyCodeAware({Key? key}) : super(key: key);
+// This widget is the root of your application.
+  @override
+  CodeAware createState() => CodeAware();
+}
 
-  // This widget is the root of your application.
+class CodeAware extends State<MyCodeAware> {
+  late StreamSubscription<User?> user;
+
+  @override
+  void initState(){
+    super.initState();
+    user = FirebaseAuth.instance.authStateChanges().listen((user) {
+      if(user==null){
+        print("user is currently signed out");
+      }else{
+        print('User is signed in!');
+      }
+    });
+  }
+
+  @override
+  void dispose(){
+    user.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: FirebaseAuth.instance.currentUser==null ? 'login_screen':'home_page',
+      routes: {
+        'welcome': (context) => WelcomeScreen(),
+        'signup_screen': (context) => SignUpScreen(),
+        'login_screen' : (context) => LogInScreen(),
+        'home_page' : (context) => HomeScreen()
+      },
+      home: WelcomeScreen(),
     );
   }
 }
