@@ -1,3 +1,4 @@
+
 class Validator{
   static String? validateName({required String name}){
     if(name.isEmpty){
@@ -11,7 +12,7 @@ class Validator{
     return null;
   }
 
-  static String? validateEmail({required String email}){
+  static String? validateEmail({required String? email}){
     if(email==null){
       return null;
     }
@@ -29,7 +30,7 @@ class Validator{
     return null;
   }
 
-  static String? validatePassword({required String password}){
+  static String? validatePassword({required String? password}){
     if(password==null){
       return null;
     }

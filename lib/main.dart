@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:code_aware/view/screens/auth_screens/login.dart';
-import 'package:code_aware/view/screens/auth_screens/welcome.dart';
+import 'package:code_aware/view/screens/auth_screens/onBoarding.dart';
 import 'package:code_aware/view/screens/auth_screens/signup.dart';
 import 'package:code_aware/view/screens/in_app_screens/home.dart';
 import 'package:page_transition/page_transition.dart';
@@ -56,7 +56,7 @@ class CodeAware extends State<MyCodeAware> {
       //   'home_page' : (context) => HomeScreen()
       // },
       home: AnimatedSplashScreen(
-          duration: 10000,
+          duration: 5000,
           splashIconSize: 150,
           splash: Image.asset("assets/images/logo.png"),
           nextScreen: _getNextScreen(),
@@ -69,8 +69,8 @@ class CodeAware extends State<MyCodeAware> {
 
   Widget _getNextScreen(){
     if(FirebaseAuth.instance.currentUser==null){
-      return LogInScreen();
+      return const OnBoardingScreen();
     }
-    return HomeScreen();
+    return const HomeScreen();
   }
 }

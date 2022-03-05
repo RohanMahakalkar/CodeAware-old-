@@ -1,45 +1,33 @@
 import 'package:flutter/material.dart';
 
 class CustomTextForm extends StatelessWidget {
-  final String label;
+  final Icon prefixIcon;
   final Color color;
+  final String label;
   final String hintText;
-  final String validator;
-  final bool obscureText;
-  final String width;
-  final String textInputType;
-  final String onChange;
-  final String border;
-  // final FormFieldValidator<String> validator;
-  // final void Function(String) onSaved, onChange;
-
-  const CustomTextForm({Key? key,
-    required this.label,
-    required this.hintText,
-    required this.color,
-    required this.validator,
-    required this.obscureText,
-    required this.width,
-    required this.textInputType,
-    required this.onChange,
-    required this.border,
-  }) : super(key: key);
+  final bool obscuretext;
+  final TextInputType textInputAction;
+  final TextEditingController controller;
+  final FormFieldValidator<String>? validator;
+  final FormFieldSetter<String>? onSaved;
+  const CustomTextForm({Key? key, required this.prefixIcon, required this.color,
+    required this.label, required this.hintText, required this.obscuretext,
+    required this.controller, this.validator, this.onSaved,
+    required this.textInputAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
+      obscureText: obscuretext,
+      onSaved: onSaved,
+      validator: validator,
+      keyboardType: textInputAction,
       decoration:  InputDecoration(
         hintText: hintText,
         labelText: label,
+        prefixIcon: prefixIcon,
       ),
-      obscureText: obscureText,
-      onSaved: (String? value) {
-        // This optional block of code can be used to run
-        // code when the user saves the form.
-      },
-      validator: (String? value) {
-        return (value == null ) ? 'Please enter the data' : null;
-      },
     );
   }
 }

@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^3.3.7
   animated_splash_screen: ^1.2.0
   page_transition: ^2.0.5
+  introduction_screen: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,12 @@ flutter:
     - assets/images/logo.png
     - assets/icons/
     - assets/icons/googleicon.png
+    - assets/Onboarding_Screens/
+    - assets/Onboarding_Screens/access_data.png
+    - assets/Onboarding_Screens/ratings.png
+    - assets/Onboarding_Screens/switches.png
+    - assets/Onboarding_Screens/welcome.png
+    - assets/Onboarding_Screens/use_smartphones.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
