@@ -16,13 +16,13 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: const Color.fromRGBO(45, 28, 71, 100),
-        shadowColor: Colors.black,
+        primary: const Color.fromARGB(255, 45, 28, 71),
+        //shadowColor: Colors.black,
         elevation: 2,
 
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(2.0)),
-          side: BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          side: BorderSide(color: Color.fromARGB(255, 45, 28, 71)),
         ),
       ),
       child: Text(

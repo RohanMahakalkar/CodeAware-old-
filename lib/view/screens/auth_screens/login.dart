@@ -1,3 +1,4 @@
+import 'package:code_aware/view/screens/auth_screens/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:code_aware/view/widgets/custom_button.dart';
@@ -14,7 +15,8 @@ class LogInScreen extends StatefulWidget{
 }
 class MyLogInScreen extends State<LogInScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   late String email;
   late String password;
 
@@ -28,20 +30,33 @@ class MyLogInScreen extends State<LogInScreen> {
             'CodeAware',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(100, 45, 28, 71),
+              fontSize: 24,
+              color: Color.fromARGB(255, 45, 28, 71),
               fontFamily: 'Comfortaa',
             ),
           ),
         ),
-        const Text(
+        const SizedBox(
+          height: 18,
+        ),
+
+    const Align(
+    alignment: Alignment.bottomLeft,
+      child:Text(
           'Login To Your Account',
+          textAlign: TextAlign.left,
           style: TextStyle(
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(100, 45, 28, 71),
+            color: Color.fromARGB(255, 45, 28, 71),
           ),
         ),
+    ),
+        const SizedBox(
+          height: 12,
+        ),
         CustomTextForm(prefixIcon: const Icon(Icons.email),
-          controller: _controller,
+          controller: emailController,
           label: 'Email',
           hintText: 'example@gmail.com',
           color: Colors.white,
@@ -49,8 +64,11 @@ class MyLogInScreen extends State<LogInScreen> {
           obscuretext: false,
           textInputAction : TextInputType.emailAddress,
           onSaved: (value) {email=value!;},),
+        const SizedBox(
+          height: 5,
+        ),
         CustomTextForm(prefixIcon: const Icon(Icons.password),
-          controller: _controller,
+          controller: passwordController,
           label: 'Password',
           hintText: '***',
           color: Colors.white,
@@ -58,8 +76,11 @@ class MyLogInScreen extends State<LogInScreen> {
           obscuretext: true,
           textInputAction: TextInputType.text,
           onSaved: (value) {password = value!;},),
+        const SizedBox(
+          height: 10,
+        ),
         CustomButton(
-            label: "sign in",
+            label: "Sign in",
             onPressed: () async {
               if(_key.currentState!.validate()){
                 User? user = await SigninUsingEmail.signInUsingEmail(
@@ -72,62 +93,122 @@ class MyLogInScreen extends State<LogInScreen> {
                 }
               }
             },
-            color: Colors.deepPurple),
+            color: const Color.fromARGB(255, 45, 28, 71)),
+
         Row(
           children: <Widget>[
             TextButton(
               child: const Text(
                 'Sign up',
-                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16,color: Color.fromARGB(255, 45, 28, 71)),
               ),
               onPressed: () {
-                //signup screen
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context)=>const SignUpScreen())
+                );
               },
             ),
+            const Spacer(),
             TextButton(
               child: const Text(
                 'Forgot Password',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 16,color: Color.fromARGB(255, 45, 28, 71)),
               ),
               onPressed: () {
                 //signup screen
               },
-            )
+            ),
+
           ],
-          mainAxisAlignment: MainAxisAlignment.end,
+    ),
+
+        const SizedBox(
+          height: 5,
         ),
-        Row(
-          children: const <Widget>[
-            Divider(
-              height: 20,
-              thickness: 5,
-              indent: 0,
-              endIndent: 80,
-              color: Colors.black,
+
+        // Row(
+        //     children: const <Widget>[
+        //       Expanded(
+        //           child: Divider(
+        //             thickness: 5,
+        //           )
+        //       ),
+        //
+        //       Text("OR"),
+        //
+        //       Expanded(
+        //           child: Divider(
+        //             thickness: 5,
+        //           )
+        //       ),
+        //     ]
+        // ),
+
+        Column(children: <Widget>[
+          Row(
+            children: const <Widget>[Text(" ")],
+          ),
+          Row(children: <Widget>[
+            Expanded(
+              child: Container(
+                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: const Divider(
+                    color: Colors.black,
+                    height: 36,
+                  )),
             ),
-            Text('or'),
-            Divider(
-              height: 20,
-              thickness: 5,
-              indent: 80,
-              endIndent: 0,
-              color: Colors.black,
+            const Text("OR"),
+            Expanded(
+              child: Container(
+                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                  child: const Divider(
+                    color: Colors.black,
+                    height: 36,
+                  )),
             ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.end,
+          ]),
+          Row(
+            children: const <Widget>[Text(" ")],
+          ),
+        ]),
+
+        // Wrap(
+        //   alignment: WrapAlignment.spaceAround,
+        //   children: const <Widget>[
+        //     Divider(
+        //       height: 20,
+        //       thickness: 5,
+        //       indent: 0,
+        //       endIndent: 230,
+        //       color: Colors.black,
+        //     ),
+        //     Text('or'),
+        //     Divider(
+        //       height: 20,
+        //       thickness: 5,
+        //       indent: 250,
+        //       endIndent: 0,
+        //       color: Colors.black,
+        //     ),
+        //   ],
+        //   // mainAxisAlignment: MainAxisAlignment.end,
+        // ),
+        const SizedBox(
+          height: 3,
         ),
         InkWell(
           onTap: () {},
           child: Ink(
-            color: const Color(0xFFBF3232),
+            color: Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.all(6),
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Image.asset('assets/icons/googleicon.png'),
-                  const SizedBox(width: 12),
-                  const Text('Sign in with Google'),
+                  // const SizedBox(width: 12),
+                  // const Text('Sign in with Google'),
                 ],
               ),
             ),
@@ -144,14 +225,14 @@ class MyLogInScreen extends State<LogInScreen> {
         body: SingleChildScrollView(
             child: Container(
               margin: const EdgeInsets.all(20.0),
-              child: Center(
+              // child: Center(
                 child: Form(
                   key: _key,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: _loginUi()),
               ),
             ),
-          )
+          // )
     );
 
   }
