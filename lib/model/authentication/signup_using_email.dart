@@ -16,8 +16,8 @@ class SignupUsingEmail {
       );
       user = userCredential.user;
       await user!.sendEmailVerification();
-      await user.updateDisplayName(firstName+lastname);
-      await user.reload();
+      // await user.updateDisplayName(firstName+" "+lastname);
+      // await user.reload();
       user = auth.currentUser;
     } on FirebaseAuthException catch(e){
       if(e.code=='weak-password'){

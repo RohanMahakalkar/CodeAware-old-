@@ -1,9 +1,11 @@
+import 'package:code_aware/view/screens/auth_screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:code_aware/view/widgets/custom_button.dart';
 import 'package:code_aware/view/widgets/custom_textform.dart';
 import 'package:code_aware/controller/validators.dart';
-import 'package:code_aware/model/authentication/signin_using_email.dart';
+import 'package:code_aware/model/authentication/signin_with_google.dart';
+import 'package:code_aware/model/authentication/signup_using_email.dart';
 import 'package:code_aware/view/screens/in_app_screens/home.dart';
 
 class SignUpScreen extends StatefulWidget{
@@ -13,6 +15,7 @@ class SignUpScreen extends StatefulWidget{
   @override
   State<SignUpScreen> createState() => MySignUpScreen();
 }
+
 class MySignUpScreen extends State<SignUpScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
   final TextEditingController emailController = TextEditingController();
@@ -20,13 +23,12 @@ class MySignUpScreen extends State<SignUpScreen> {
   final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
-  late String email;
-  late String password;
-  late String confirmPassword;
-  late String firstName;
-  late String lastName;
 
-
+  String email = "";
+  String password = "";
+  String confirmPassword = "";
+  String firstName = "";
+  String lastName = "";
 
   Widget _signupUi(){
     return Column(
@@ -79,7 +81,6 @@ class MySignUpScreen extends State<SignUpScreen> {
                 label: 'Last name',
                 hintText: 'Dacosta',
                 color: Colors.white,
-                //validator: (value) => Validator.validateEmail(email:value),
                 obscuretext: false,
                 textInputAction : TextInputType.emailAddress,
                 onSaved: (value) {lastName=value!;},
@@ -100,8 +101,8 @@ class MySignUpScreen extends State<SignUpScreen> {
           validator: (value) => Validator.validateEmail(email:value),
           obscuretext: false,
           textInputAction : TextInputType.emailAddress,
-          onSaved: (value) {email=value!;},),
-
+          onSaved: (value) {email=value!;},
+        ),
 
         const SizedBox(
           height: 5,
@@ -126,22 +127,39 @@ class MySignUpScreen extends State<SignUpScreen> {
           label: 'Confirm Password',
           hintText: '***',
           color: Colors.white,
-          validator: (value) => Validator.validatePassword(password: value),
+          validator: (value) => Validator.validateConfirmPassword(password: passwordController.text, confirmPassword: value),
           obscuretext: true,
           textInputAction: TextInputType.text,
           onSaved: (value) {confirmPassword = value!;},),
 
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              primary: const Color.fromARGB(255, 45, 28, 71)
+            ),
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=> const LogInScreen()));
+            },
+            child: const Text("Already have?"),
+          ),
+        ),
+
         const SizedBox(
-          height: 15,
+          height: 10,
         ),
 
         CustomButton(
             label: "Create Account",
             onPressed: () async {
               if(_key.currentState!.validate()){
-                User? user = await SigninUsingEmail.signInUsingEmail(
-                    email: email,
-                    password: password);
+                User? user = await SignupUsingEmail.signUpUsingEmail(
+                    firstName: firstNameController.text,
+                    lastname: lastNameController.text,
+                    email: emailController.text,
+                    password: passwordController.text);
                 if(user!=null){
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context)=>const HomeScreen())
@@ -151,11 +169,9 @@ class MySignUpScreen extends State<SignUpScreen> {
             },
             color: const Color.fromARGB(255, 45, 28, 71)),
 
-
         const SizedBox(
           height: 10,
         ),
-
 
         Column(children: <Widget>[
           Row(
@@ -177,7 +193,8 @@ class MySignUpScreen extends State<SignUpScreen> {
                   child: const Divider(
                     color: Colors.black,
                     height: 36,
-                  )),
+                  )
+              ),
             ),
           ]),
           Row(
@@ -189,7 +206,12 @@ class MySignUpScreen extends State<SignUpScreen> {
           height: 10,
         ),
         InkWell(
-          onTap: () {},
+          onTap: () async {
+            await SignInWithGoogle.signInWithGoogle();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context)=>const HomeScreen())
+            );
+          },
           child: Ink(
             color: Colors.transparent,
             child: Padding(
@@ -198,8 +220,6 @@ class MySignUpScreen extends State<SignUpScreen> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Image.asset('assets/icons/googleicon.png'),
-                  // const SizedBox(width: 12),
-                  // const Text('Sign in with Google'),
                 ],
               ),
             ),
@@ -212,24 +232,20 @@ class MySignUpScreen extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(179, 235, 228, 248),
+      resizeToAvoidBottomInset: false,
       body: Stack(
           children:  <Widget>[
             SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.all(20.0),
-                // child: Center(
                 child: Form(
                     key: _key,
                     autovalidateMode: AutovalidateMode.disabled,
                     child: _signupUi()),
               ),
-      ),
-      // )
-    ]
+            ),
+          ]
       ),
     );
-
   }
-
 }

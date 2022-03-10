@@ -71,6 +71,6 @@ class CodeAware extends State<MyCodeAware> {
     if(FirebaseAuth.instance.currentUser==null){
       return const OnBoardingScreen();
     }
-    return const HomeScreen();
+    return const OnBoardingScreen();
   }
 }

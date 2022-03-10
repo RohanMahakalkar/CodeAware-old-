@@ -6,6 +6,8 @@ import 'package:code_aware/view/widgets/custom_textform.dart';
 import 'package:code_aware/controller/validators.dart';
 import 'package:code_aware/model/authentication/signin_using_email.dart';
 import 'package:code_aware/view/screens/in_app_screens/home.dart';
+
+import '../../../model/authentication/signin_with_google.dart';
 class LogInScreen extends StatefulWidget{
   const LogInScreen({Key? key}) : super(key: key);
   static String routeName = 'login-page';
@@ -17,8 +19,8 @@ class MyLogInScreen extends State<LogInScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  late String email;
-  late String password;
+  String email = "";
+  String password = "";
 
   Widget _loginUi(){
     return Column(
@@ -84,8 +86,8 @@ class MyLogInScreen extends State<LogInScreen> {
             onPressed: () async {
               if(_key.currentState!.validate()){
                 User? user = await SigninUsingEmail.signInUsingEmail(
-                    email: email, 
-                    password: password);
+                    email: emailController.text,
+                    password: passwordController.text);
                 if(user!=null){
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context)=>const HomeScreen())
@@ -121,29 +123,11 @@ class MyLogInScreen extends State<LogInScreen> {
             ),
 
           ],
-    ),
+        ),
 
         const SizedBox(
           height: 5,
         ),
-
-        // Row(
-        //     children: const <Widget>[
-        //       Expanded(
-        //           child: Divider(
-        //             thickness: 5,
-        //           )
-        //       ),
-        //
-        //       Text("OR"),
-        //
-        //       Expanded(
-        //           child: Divider(
-        //             thickness: 5,
-        //           )
-        //       ),
-        //     ]
-        // ),
 
         Column(children: <Widget>[
           Row(
@@ -156,7 +140,8 @@ class MyLogInScreen extends State<LogInScreen> {
                   child: const Divider(
                     color: Colors.black,
                     height: 36,
-                  )),
+                  )
+              ),
             ),
             const Text("OR"),
             Expanded(
@@ -165,7 +150,8 @@ class MyLogInScreen extends State<LogInScreen> {
                   child: const Divider(
                     color: Colors.black,
                     height: 36,
-                  )),
+                  )
+              ),
             ),
           ]),
           Row(
@@ -173,32 +159,16 @@ class MyLogInScreen extends State<LogInScreen> {
           ),
         ]),
 
-        // Wrap(
-        //   alignment: WrapAlignment.spaceAround,
-        //   children: const <Widget>[
-        //     Divider(
-        //       height: 20,
-        //       thickness: 5,
-        //       indent: 0,
-        //       endIndent: 230,
-        //       color: Colors.black,
-        //     ),
-        //     Text('or'),
-        //     Divider(
-        //       height: 20,
-        //       thickness: 5,
-        //       indent: 250,
-        //       endIndent: 0,
-        //       color: Colors.black,
-        //     ),
-        //   ],
-        //   // mainAxisAlignment: MainAxisAlignment.end,
-        // ),
         const SizedBox(
           height: 3,
         ),
         InkWell(
-          onTap: () {},
+          onTap: () async {
+            await SignInWithGoogle.signInWithGoogle();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context)=>const HomeScreen())
+            );
+          },
           child: Ink(
             color: Colors.transparent,
             child: Padding(
@@ -207,8 +177,6 @@ class MyLogInScreen extends State<LogInScreen> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Image.asset('assets/icons/googleicon.png'),
-                  // const SizedBox(width: 12),
-                  // const Text('Sign in with Google'),
                 ],
               ),
             ),
@@ -221,18 +189,18 @@ class MyLogInScreen extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         // backgroundColor: const Color.fromARGB(179, 235, 228, 248),
         body: SingleChildScrollView(
             child: Container(
               margin: const EdgeInsets.all(20.0),
-              // child: Center(
                 child: Form(
                   key: _key,
                   autovalidateMode: AutovalidateMode.disabled,
-                  child: _loginUi()),
+                  child: _loginUi()
+                ),
               ),
             ),
-          // )
     );
 
   }
