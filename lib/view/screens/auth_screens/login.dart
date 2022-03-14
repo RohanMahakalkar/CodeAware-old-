@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:code_aware/view/widgets/custom_button.dart';
 import 'package:code_aware/view/widgets/custom_textform.dart';
 import 'package:code_aware/controller/validators.dart';
-import 'package:code_aware/model/authentication/signin_using_email.dart';
+import 'package:code_aware/model/authentication/authentication_services.dart';
 import 'package:code_aware/view/screens/in_app_screens/home.dart';
 
-import '../../../model/authentication/signin_with_google.dart';
 class LogInScreen extends StatefulWidget{
   const LogInScreen({Key? key}) : super(key: key);
   static String routeName = 'login-page';
@@ -85,7 +84,7 @@ class MyLogInScreen extends State<LogInScreen> {
             label: "Sign in",
             onPressed: () async {
               if(_key.currentState!.validate()){
-                User? user = await SigninUsingEmail.signInUsingEmail(
+                User? user = await AuthenticationServices.signInUsingEmail(
                     email: emailController.text,
                     password: passwordController.text);
                 if(user!=null){
@@ -164,7 +163,7 @@ class MyLogInScreen extends State<LogInScreen> {
         ),
         InkWell(
           onTap: () async {
-            await SignInWithGoogle.signInWithGoogle();
+            await AuthenticationServices.signInWithGoogle();
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context)=>const HomeScreen())
             );

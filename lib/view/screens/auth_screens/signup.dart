@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:code_aware/view/widgets/custom_button.dart';
 import 'package:code_aware/view/widgets/custom_textform.dart';
 import 'package:code_aware/controller/validators.dart';
-import 'package:code_aware/model/authentication/signin_with_google.dart';
-import 'package:code_aware/model/authentication/signup_using_email.dart';
+import 'package:code_aware/model/authentication/authentication_services.dart';
 import 'package:code_aware/view/screens/in_app_screens/home.dart';
 
 class SignUpScreen extends StatefulWidget{
@@ -155,9 +154,9 @@ class MySignUpScreen extends State<SignUpScreen> {
             label: "Create Account",
             onPressed: () async {
               if(_key.currentState!.validate()){
-                User? user = await SignupUsingEmail.signUpUsingEmail(
+                User? user = await AuthenticationServices.signUpUsingEmail(
                     firstName: firstNameController.text,
-                    lastname: lastNameController.text,
+                    lastName: lastNameController.text,
                     email: emailController.text,
                     password: passwordController.text);
                 if(user!=null){
@@ -207,7 +206,7 @@ class MySignUpScreen extends State<SignUpScreen> {
         ),
         InkWell(
           onTap: () async {
-            await SignInWithGoogle.signInWithGoogle();
+            await AuthenticationServices.signInWithGoogle();
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context)=>const HomeScreen())
             );

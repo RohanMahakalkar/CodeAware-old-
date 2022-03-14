@@ -48,13 +48,6 @@ class CodeAware extends State<MyCodeAware> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // initialRoute: 'welcome',
-      // routes: {
-      //   'welcome': (context) => WelcomeScreen(),
-      //   'signup_screen': (context) => SignUpScreen(),
-      //   'login_screen' : (context) => LogInScreen(),
-      //   'home_page' : (context) => HomeScreen()
-      // },
       home: AnimatedSplashScreen(
           duration: 5000,
           splashIconSize: 150,
